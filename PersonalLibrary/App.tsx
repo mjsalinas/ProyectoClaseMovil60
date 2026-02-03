@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import CustomButton from './src/components/CustomButton';
+import CustomInput from './src/components/CustomInput';
 
 export default function App() {
   const handleOnLogin = () => {
@@ -20,11 +21,14 @@ export default function App() {
         <View style={styles.buttonsWrapper}>
           <CustomButton 
               title={'Login'} 
-              onClick={handleOnLogin} />
+              onClick={handleOnLogin}
+              />
           <CustomButton 
               title={'Salir'}
               onClick={handleOnLogout}
               variant={'secondary'} />
+
+              <CustomInput/>
         </View>
       </View>
     </View>
@@ -44,7 +48,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f3f4f6',
   },
   buttonsWrapper: {
-    backgroundColor: "green",
     marginTop: 15,
     height: "30%",
     alignItems: "center",
