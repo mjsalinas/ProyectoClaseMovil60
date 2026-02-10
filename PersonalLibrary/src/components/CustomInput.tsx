@@ -4,7 +4,7 @@ import { useState } from "react";
 
 type Props = {
     placeholder: string,
-    onChange: () => void;
+    onChange: (text: string) => void;
     value: string;
     typeInput : 'password' | 'email' | 'numeric' | 'text';
     
@@ -14,6 +14,11 @@ export default function CustomInput ({placeholder, onChange, value, typeInput}:P
         //sintaxis:
         //[nombreDeVariable, funcion] = useState(<valorInicial>);
     const [isSecureText, setIsSecureText] = useState(typeInput === 'password'); 
+    const isPasswordField = typeInput === 'password';
+
+    const icon : typeof MaterialIcons["name"]|undefined =
+        typeInput === "email" ? "email" : 
+            typeInput === "password" ? "lock" : undefined
 
     return(
         //wrapper
@@ -21,27 +26,26 @@ export default function CustomInput ({placeholder, onChange, value, typeInput}:P
             {/* //inputContainer */}
             <View style={styles.inputContainer}>
                 <MaterialIcons 
-                    name={"lock"}
+                    name={icon}
                     size={20}
                     color={"#000000"}
                 />
                 <TextInput 
+                    style={styles.input}
                     placeholder={placeholder}
                     value={value} 
                     onChangeText={onChange}
                     secureTextEntry={isSecureText}
                 />
-                <TouchableOpacity
-                onPress={
-                    ()=>{
 
-                    }
-                }>
-                    <Ionicons name={"eye"}  size={20} />
-                </TouchableOpacity>
+             { isPasswordField && 
+                <TouchableOpacity onPress={()=>{setIsSecureText(!isSecureText)}}>
+                    <Ionicons name={isSecureText ? "eye" : "eye-off"}  size={20} />
+                </TouchableOpacity> 
+            }
             
             </View>
-            <Text>*Campo Requerido</Text>
+            <Text>*Campo Requerido {value}</Text>
         </View>
     );
 }
@@ -55,11 +59,14 @@ const styles = StyleSheet.create({
     inputContainer:{
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:'space-between',
         
         borderWidth: 1,
         borderColor: "#ccc",
         borderRadius: 8,
         paddingHorizontal: 13,
+    },
+    input:{
+        paddingHorizontal:10,
+        width:'80%'
     }
 });

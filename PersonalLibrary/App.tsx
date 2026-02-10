@@ -2,11 +2,15 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import CustomButton from './src/components/CustomButton';
 import CustomInput from './src/components/CustomInput';
+import { useState } from 'react';
 
 export default function App() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+
   const handleOnLogin = () => {
     console.log("prueba login desde app");
-    alert("Alerta login desde app");
   }
 
   const handleOnLogout = () => {
@@ -19,6 +23,24 @@ export default function App() {
         <Text>Open up App</Text>
         <StatusBar style="auto" />
         <View style={styles.buttonsWrapper}>
+           <CustomInput 
+              placeholder={'Ingrese su correo'} 
+              onChange={setEmail} 
+              value={email} 
+              typeInput={'email'}              
+              />
+               <CustomInput 
+              placeholder={'Password'} 
+              onChange={setPassword} 
+              value={password} 
+              typeInput={'password'}              
+              />
+               <CustomInput 
+              placeholder={'Name'} 
+              onChange={()=>{}} 
+              value={""} 
+              typeInput={'text'}              
+              />
           <CustomButton 
               title={'Login'} 
               onClick={handleOnLogin}
@@ -28,18 +50,7 @@ export default function App() {
               onClick={handleOnLogout}
               variant={'secondary'} />
 
-              <CustomInput 
-              placeholder={'Ingrese su correo'} 
-              onChange={()=>{}} 
-              value={''} 
-              typeInput={'email'}              
-              />
-               <CustomInput 
-              placeholder={'Password'} 
-              onChange={()=>{}} 
-              value={''} 
-              typeInput={'password'}              
-              />
+            
         </View>
       </View>
     </View>
