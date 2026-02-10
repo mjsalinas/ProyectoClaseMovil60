@@ -1,4 +1,4 @@
-import { TextInput, View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { TextInput, View, Text, StyleSheet, TouchableOpacity, KeyboardTypeOptions } from "react-native";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useState } from "react";
 
@@ -6,8 +6,7 @@ type Props = {
     placeholder: string,
     onChange: (text: string) => void;
     value: string;
-    typeInput : 'password' | 'email' | 'numeric' | 'text';
-    
+    typeInput : 'password' | 'email' | 'number' | 'text';
 }
 export default function CustomInput ({placeholder, onChange, value, typeInput}:Props){
 //uso de variables en el estado local
@@ -20,6 +19,20 @@ export default function CustomInput ({placeholder, onChange, value, typeInput}:P
         typeInput === "email" ? "email" : 
             typeInput === "password" ? "lock" : undefined
 
+
+    const keyboardType: KeyboardTypeOptions = 
+    typeInput === "email" ? "email-address" :
+           typeInput === "number" ? "numeric" : "default"   
+
+    const getError = () =>{
+        if (typeInput === "email" && !value.includes('@')) 
+            return 'Correo Invalido';
+        if (typeInput === "password" && value.length < 6)
+            return 'La contraseña debe ser mas fuerte';
+    };
+    
+    const error = getError();
+    
     return(
         //wrapper
         <View style={styles.wrapper}>
@@ -36,16 +49,16 @@ export default function CustomInput ({placeholder, onChange, value, typeInput}:P
                     value={value} 
                     onChangeText={onChange}
                     secureTextEntry={isSecureText}
+                    keyboardType={keyboardType}
                 />
 
-             { isPasswordField && 
+            { isPasswordField && 
                 <TouchableOpacity onPress={()=>{setIsSecureText(!isSecureText)}}>
                     <Ionicons name={isSecureText ? "eye" : "eye-off"}  size={20} />
                 </TouchableOpacity> 
             }
-            
             </View>
-            <Text>*Campo Requerido {value}</Text>
+           {error && <Text> {error} </Text> }
         </View>
     );
 }
@@ -59,7 +72,7 @@ const styles = StyleSheet.create({
     inputContainer:{
         flexDirection:'row',
         alignItems:'center',
-        
+
         borderWidth: 1,
         borderColor: "#ccc",
         borderRadius: 8,
