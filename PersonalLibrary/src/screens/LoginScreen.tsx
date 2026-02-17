@@ -8,7 +8,7 @@ export default function LoginScreen ({navigation}: any) {
   const [password, setPassword] = useState("");
 
   const handleOnLogin = () => {
-    console.log("prueba login desde app");
+    navigation.navigate('Home', {email})
   }
 
   const handleOnLogout = () => {
