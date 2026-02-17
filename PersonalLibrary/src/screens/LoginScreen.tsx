@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 
-export default function LoginScreen() {
+export default function LoginScreen ({navigation}: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -32,11 +32,7 @@ export default function LoginScreen() {
               value={password} 
               typeInput={'password'}              
               />
-               <CustomInput 
-              placeholder={'Name'} 
-              onChange={()=>{}} 
-              value={""} 
-              />
+             
           <CustomButton 
               title={'Login'} 
               onClick={handleOnLogin}
@@ -45,7 +41,6 @@ export default function LoginScreen() {
               title={'Salir'}
               onClick={handleOnLogout}
               variant={'secondary'} />
-
             
         </View>
       </View>
@@ -72,3 +67,4 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
 });
+
