@@ -8,7 +8,14 @@ export default function LoginScreen ({navigation}: any) {
   const [password, setPassword] = useState("");
 
   const handleOnLogin = () => {
-    navigation.navigate('Home', {email})
+    //navegar a una pantalla dentro del mismo stack navigator
+    // navigation.navigate("Home")
+
+     //navegar a una pantalla que espera parametros por ruta dentro del mismo stack navigator 
+    // navigation.navigate("Home", {email})
+
+    //navegar a una tab especifica
+    navigation.navigate("Tabs", {screen: "Home"})
   }
 
   const handleOnLogout = () => {
