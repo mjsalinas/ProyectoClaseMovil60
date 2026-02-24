@@ -16,10 +16,7 @@ export default function StackNavigator() {
         <Stack.Navigator initialRouteName='Login' 
         screenOptions={{headerShown: true}}
         >
-            {/* <Stack.Screen 
-                name="Home"
-                component={HomeScreen}
-            /> */}
+         
             <Stack.Screen 
                 name="Login" 
                 component={LoginScreen} 
