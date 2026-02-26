@@ -12,8 +12,8 @@ type AuthContextType = {
     // login: (email: string, password: string)=>Promise<void>;
     login: (email: string, password: string) => boolean;
     // register: (email: string, password: string)=>Promise<void>;
-    register: (email: string, password: string)=>boolean;
-    logout: ()=>{};
+    // register: (email: string, password: string)=>boolean;
+    logout: ()=>void;
 }
 // 1. Definir el contexto
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -21,7 +21,8 @@ const AuthContext = createContext<AuthContextType | null>(null)
 //2. Utilizar el contexto: Hook Personalizado 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-
+    if (!context) throw new Error ('useAuth debe usarse dentro de AuthProvider');
+    return (context);
 };
 //3. Definicion de Context Provider 
 export const AuthProvider = ({children}: {children: React.ReactNode} ) => {
@@ -35,11 +36,15 @@ export const AuthProvider = ({children}: {children: React.ReactNode} ) => {
             setIsAllowed(allowed)
         }
         return allowed;
-    }
+    };
+    const logout = () =>{
+        setUser(null);
+        setIsAllowed(false);
+    };
 
     return (
-        <AuthContext.Provider value={{}}>
-
+        <AuthContext.Provider value={{user, isAllowed, login, logout}}>
+            {children}
         </AuthContext.Provider>
     )
 }

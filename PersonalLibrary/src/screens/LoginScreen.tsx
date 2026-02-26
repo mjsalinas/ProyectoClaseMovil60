@@ -1,21 +1,33 @@
 import { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
+import { useAuth } from "../contexts/AuthContext";
 
-export default function LoginScreen ({navigation}: any) {
+export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { login, isAllowed } = useAuth();
+
   const handleOnLogin = () => {
-    //navegar a una pantalla dentro del mismo stack navigator
+    try {
+         //navegar a una pantalla dentro del mismo stack navigator
     // navigation.navigate("Home")
 
-     //navegar a una pantalla que espera parametros por ruta dentro del mismo stack navigator 
+    //navegar a una pantalla que espera parametros por ruta dentro del mismo stack navigator 
     // navigation.navigate("Home", {email})
 
     //navegar a una tab especifica
-    navigation.navigate("Tabs", {screen: "Home"})
+    const allowed = login(email, password);
+    if (allowed) {
+      navigation.navigate("Tabs", { screen: "Home" })
+    }else{
+      Alert.alert("Credenciales Incorrectas", "Por favor ingrese correo .edu");
+    }
+    } catch (error: any) {
+      Alert.alert(error.message)
+    }
   }
 
   const handleOnLogout = () => {
@@ -27,28 +39,28 @@ export default function LoginScreen ({navigation}: any) {
       <View style={styles.card}>
         <Text>Open up App</Text>
         <View style={styles.buttonsWrapper}>
-           <CustomInput 
-              placeholder={'Ingrese su correo'} 
-              onChange={setEmail} 
-              value={email} 
-              typeInput={'email'}              
-              />
-               <CustomInput 
-              placeholder={'Password'} 
-              onChange={setPassword} 
-              value={password} 
-              typeInput={'password'}              
-              />
-             
-          <CustomButton 
-              title={'Login'} 
-              onClick={handleOnLogin}
-              />
-          <CustomButton 
-              title={'Salir'}
-              onClick={handleOnLogout}
-              variant={'secondary'} />
-            
+          <CustomInput
+            placeholder={'Ingrese su correo'}
+            onChange={setEmail}
+            value={email}
+            typeInput={'email'}
+          />
+          <CustomInput
+            placeholder={'Password'}
+            onChange={setPassword}
+            value={password}
+            typeInput={'password'}
+          />
+
+          <CustomButton
+            title={'Login'}
+            onClick={handleOnLogin}
+          />
+          <CustomButton
+            title={'Salir'}
+            onClick={handleOnLogout}
+            variant={'secondary'} />
+
         </View>
       </View>
     </View>
@@ -64,7 +76,7 @@ const styles = StyleSheet.create({
   card: {
     width: "80%",
     height: "80%",
-    borderRadius:15,
+    borderRadius: 15,
     backgroundColor: '#f3f4f6',
   },
   buttonsWrapper: {
