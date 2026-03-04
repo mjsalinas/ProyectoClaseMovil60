@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { View, Text, Button } from "react-native";
 import { RootStackParamList } from "../navigation/StackNavigator";
 import { TabsParamList } from "../navigation/TabsNavigator";
-import { useLanguage } from "../contexts/LanguageContext";
+import { i18n, useLanguage } from "../contexts/LanguageContext";
 
 type Props = NativeStackScreenProps<TabsParamList, 'Home'>;
 
@@ -14,7 +14,7 @@ export default function HomeScreen() {
 
     return (
         <View>
-            <Text>Bienvenido a home</Text>
+            <Text>{i18n.t('welcome')} home</Text>
             <Text>Tu idioma actual es: {language} </Text>
             <Button title="EN" onPress={() => changeLanguage('en')} />
             <Button title="ES" onPress={() => changeLanguage('es')} />

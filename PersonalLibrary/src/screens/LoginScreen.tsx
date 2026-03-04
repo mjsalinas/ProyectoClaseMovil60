@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import { useAuth } from "../contexts/AuthContext";
+import { i18n } from "../contexts/LanguageContext";
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
@@ -37,10 +38,10 @@ export default function LoginScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text>Open up App</Text>
+        <Text>{i18n.t('signIn')}</Text>
         <View style={styles.buttonsWrapper}>
           <CustomInput
-            placeholder={'Ingrese su correo'}
+            placeholder={i18n.t('enterEmail')}
             onChange={setEmail}
             value={email}
             typeInput={'email'}
@@ -57,7 +58,7 @@ export default function LoginScreen({ navigation }: any) {
             onClick={handleOnLogin}
           />
           <CustomButton
-            title={'Salir'}
+            title={i18n.t('exit')}
             onClick={handleOnLogout}
             variant={'secondary'} />
 
