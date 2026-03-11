@@ -31,8 +31,4 @@ export const statusColors = {
   pending: { bg: '#E0E7FF', text: '#3730A3', label: 'Pendiente' },
 };
 
-export const genres = [
-  'Ficción', 'No Ficción', 'Ciencia Ficción', 'Fantasía', 'Romance',
-  'Misterio', 'Terror', 'Biografía', 'Historia', 'Autoayuda',
-  'Ciencia', 'Poesía', 'Drama', 'Aventura', 'Filosofía',
-];
+

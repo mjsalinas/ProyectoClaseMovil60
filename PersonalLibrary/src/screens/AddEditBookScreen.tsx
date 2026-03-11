@@ -11,9 +11,10 @@ import {
   Platform,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { colors, genres } from '../theme/colors';
+import { colors } from '../theme/colors';
 import { Book, BookStatus } from '../types/book';
 import RatingStars from '../components/RatingStars';
+import { genres } from '../data/genres';
 
 const statusOptions: { key: BookStatus; label: string; icon: any }[] = [
   { key: 'pending', label: 'Pendiente', icon: 'bookmark-outline' },

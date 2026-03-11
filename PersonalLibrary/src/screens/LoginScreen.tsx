@@ -6,6 +6,8 @@ import {
   Alert,
   Platform,
   StatusBar,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import CustomInput from "../components/CustomInput";
@@ -38,54 +40,63 @@ export default function LoginScreen({ navigation }: any) {
   };
 
   return (
-    <View style={styles.screen}>
+    <KeyboardAvoidingView
+      style={styles.screen}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <StatusBar barStyle="light-content" />
 
-      <View style={styles.headerSection}>
-        <View style={styles.logoContainer}>
-          <MaterialIcons name="auto-stories" size={52} color={colors.white} />
+      <ScrollView
+        contentContainerStyle={styles.scrollContent}
+        keyboardShouldPersistTaps="handled"
+        bounces={false}
+      >
+        <View style={styles.headerSection}>
+          <View style={styles.logoContainer}>
+            <MaterialIcons name="auto-stories" size={52} color={colors.white} />
+          </View>
+          <Text style={styles.appName}>BookLog</Text>
+          <Text style={styles.appTagline}>Tu biblioteca personal</Text>
         </View>
-        <Text style={styles.appName}>BookLog</Text>
-        <Text style={styles.appTagline}>Tu biblioteca personal</Text>
-      </View>
 
-      <View style={styles.formSection}>
-        <View style={styles.card}>
-          <Text style={styles.cardTitle}>{i18n.t("signIn")}</Text>
-          <Text style={styles.cardSubtitle}>
-            Ingresa tus credenciales para continuar
+        <View style={styles.formSection}>
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>{i18n.t("signIn")}</Text>
+            <Text style={styles.cardSubtitle}>
+              Ingresa tus credenciales para continuar
+            </Text>
+
+            <View style={styles.inputsContainer}>
+              <CustomInput
+                placeholder={i18n.t("enterEmail")}
+                onChange={setEmail}
+                value={email}
+                typeInput={"email"}
+              />
+              <CustomInput
+                placeholder={"Password"}
+                onChange={setPassword}
+                value={password}
+                typeInput={"password"}
+              />
+            </View>
+
+            <View style={styles.buttonsContainer}>
+              <CustomButton title={"Iniciar Sesión"} onClick={handleOnLogin} />
+              <CustomButton
+                title={i18n.t("exit")}
+                onClick={handleOnLogout}
+                variant={"secondary"}
+              />
+            </View>
+          </View>
+
+          <Text style={styles.footerText}>
+            BookLog v1.0 - Tu historial de lectura
           </Text>
-
-          <View style={styles.inputsContainer}>
-            <CustomInput
-              placeholder={i18n.t("enterEmail")}
-              onChange={setEmail}
-              value={email}
-              typeInput={"email"}
-            />
-            <CustomInput
-              placeholder={"Password"}
-              onChange={setPassword}
-              value={password}
-              typeInput={"password"}
-            />
-          </View>
-
-          <View style={styles.buttonsContainer}>
-            <CustomButton title={"Iniciar Sesión"} onClick={handleOnLogin} />
-            <CustomButton
-              title={i18n.t("exit")}
-              onClick={handleOnLogout}
-              variant={"secondary"}
-            />
-          </View>
         </View>
-
-        <Text style={styles.footerText}>
-          BookLog v1.0 - Tu historial de lectura
-        </Text>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -93,6 +104,9 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: colors.primary,
+  },
+  scrollContent: {
+     flexGrow: 2,
   },
   headerSection: {
     alignItems: "center",
