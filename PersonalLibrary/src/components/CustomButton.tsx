@@ -1,45 +1,60 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { colors } from "../theme/colors";
 
 interface CustomButtonProps {
     title: string;
     onClick: () => void;
-    variant?: "primary" | "secondary"; 
+    variant?: "primary" | "secondary";
 }
-export default function CustomButton ({
+
+export default function CustomButton({
     title,
     onClick,
     variant = "primary"
-}: CustomButtonProps){
-    const styles = getStyles(variant);
- 
-    return(
-       <TouchableOpacity
+}: CustomButtonProps) {
+    const isPrimary = variant === "primary";
+
+    return (
+        <TouchableOpacity
             onPress={onClick}
-            style={styles.container}>
-                <Text
-                style={styles.text}>
-                    {title}
-                </Text>
+            style={[styles.container, isPrimary ? styles.primary : styles.secondary]}
+            activeOpacity={0.8}
+        >
+            <Text style={[styles.text, isPrimary ? styles.primaryText : styles.secondaryText]}>
+                {title}
+            </Text>
         </TouchableOpacity>
     );
 }
 
-const getStyles = (variant: 'primary' | 'secondary' ) => 
-    StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
-        paddingVertical: 15,
+        paddingVertical: 16,
         alignItems: 'center',
-        width: "80%",
-        backgroundColor: 
-            variant === "primary" ? "#2e4566": "white",
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: "#f3f4f6",
+        width: "85%",
+        borderRadius: 14,
+    },
+    primary: {
+        backgroundColor: colors.primary,
+        shadowColor: colors.primary,
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.25,
+        shadowRadius: 8,
+        elevation: 4,
+    },
+    secondary: {
+        backgroundColor: colors.white,
+        borderWidth: 1.5,
+        borderColor: colors.border,
     },
     text: {
-        color: 
-            variant === "primary" ?  "white" : "black",
-        fontSize: 18,
-        fontWeight: "500"
-    }
+        fontSize: 16,
+        fontWeight: "600",
+    },
+    primaryText: {
+        color: colors.white,
+    },
+    secondaryText: {
+        color: colors.textSecondary,
+    },
 });
