@@ -12,14 +12,15 @@ import {
 import { MaterialIcons } from "@expo/vector-icons";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth} from "../contexts/AuthContext";
 import { i18n } from "../contexts/LanguageContext";
 import { colors } from "../theme/colors";
+import { User } from "../types/user";
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [user, setUser] = useState<User>(null);
   const { login } = useAuth();
 
   const handleOnLogin = () => {

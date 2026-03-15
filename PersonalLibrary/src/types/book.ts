@@ -1,16 +1,16 @@
-export type BookStatus = 'read' | 'reading' | 'pending';
+export type BookStatus = 'pending' | 'reading' | 'read';
 
 export interface Book {
-  id: string;
-  title: string;
-  author: string;
-  genre: string;
-  status: BookStatus;
-  rating: number;
-  review: string;
-  coverImage?: string;
-  photos: string[];
-  startDate?: string;
-  endDate?: string;
-  createdAt: string;
+    id: string;
+    title: string;
+    author: string;
+    genre: string;
+    status: BookStatus;
+    rating: number;
+    review: string;
+    coverImage: string; 
+    photos: string[];
+    startDate?: string;
+    endDate?: string;
+    createdAt: string;
 }
