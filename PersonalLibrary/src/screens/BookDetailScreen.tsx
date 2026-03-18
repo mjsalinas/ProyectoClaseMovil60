@@ -1,13 +1,18 @@
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
-import { Book } from '../types/book';
 import RatingStars from '../components/RatingStars';
 import StatusBadge from '../components/StatusBadge';
 import PhotoGrid from '../components/PhotoGrid';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { deleteBook } from '../store/slices/booksSlice';
 
 export default function BookDetailScreen({ route, navigation }: any) {
-  const { book } = route.params as { book?: Book };
+  const { bookId } = route.params;
+  const dispatch = useAppDispatch();
+  const book = useAppSelector((state) =>
+    state.books.books.find((b) => b.id === bookId)
+  );
 
   if (!book) {
     return (
@@ -148,7 +153,23 @@ export default function BookDetailScreen({ route, navigation }: any) {
             </TouchableOpacity>
             <TouchableOpacity
               style={[styles.actionButton, { backgroundColor: colors.dangerLight }]}
-              onPress={() => Alert.alert('Eliminar', '¿Estás seguro de eliminar este libro?')}
+              onPress={() =>
+                Alert.alert(
+                  'Eliminar libro',
+                  `¿Estás seguro de eliminar "${book.title}"? Esta acción no se puede deshacer.`,
+                  [
+                    { text: 'Cancelar', style: 'cancel' },
+                    {
+                      text: 'Eliminar',
+                      style: 'destructive',
+                      onPress: () => {
+                        dispatch(deleteBook(book.id));
+                        navigation.goBack();
+                      },
+                    },
+                  ]
+                )
+              }
               activeOpacity={0.7}
             >
               <View style={[styles.actionIcon, { backgroundColor: colors.danger }]}>

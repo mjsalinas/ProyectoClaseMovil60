@@ -1,47 +1,38 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Book } from "../../types/book";
 
-
 interface BooksState {
     books: Book[];
-    selectedBook: Book;
+    selectedBook: Book | null;
 }
+
 const initialState: BooksState = {
-  books: [],
-  book: {
-     id: '',
-        title: '',
-        author: '',
-        genre: '',
-        status: 'read',
-        rating: '',
-        review: '',
-        coverImage: '',
-        photos: [],
-        startDate?: '',
-        endDate?: '',
-        createdAt: '',
-  }
+    books: [],
+    selectedBook: null,
 };
 
-const bookSlice = createSlice({
+const booksSlice = createSlice({
     name: 'books',
     initialState,
-    reducers:{
-        // setSelectedBook: (state, action: PayloadAction<Book>)=>{
-        //     state.name = action.payload.name,
-        //     state.author = action.payload.author,     
-        //     state.genre = action.payload.genre,
-        //     state.rating =action.payload.rating,
-        //     state.publishDate = action.payload.publishDate      
-        // },
-        addBook: (state, action: PayloadAction<Book>)=>{
+    reducers: {
+        addBook: (state, action: PayloadAction<Book>) => {
             state.books.push(action.payload);
         },
-        clearBook: () => initialState,
+        updateBook: (state, action: PayloadAction<Book>) => {
+            const index = state.books.findIndex(b => b.id === action.payload.id);
+            if (index !== -1) {
+                state.books[index] = action.payload;
+            }
+        },
+        deleteBook: (state, action: PayloadAction<string>) => {
+            state.books = state.books.filter(b => b.id !== action.payload);
+        },
+        selectBook: (state, action: PayloadAction<Book | null>) => {
+            state.selectedBook = action.payload;
+        },
+        clearBooks: () => initialState,
     },
 });
-//exportar actions utilizando Slice
-export const {addBook, clearBook} = bookSlice.actions;
-//exportar el reducer de book como default
-export default bookSlice.reducer;
+
+export const { addBook, updateBook, deleteBook, selectBook, clearBooks } = booksSlice.actions;
+export default booksSlice.reducer;

@@ -15,8 +15,8 @@ import { colors } from '../theme/colors';
 import { Book, BookStatus } from '../types/book';
 import RatingStars from '../components/RatingStars';
 import { genres } from '../data/genres';
-import { useAppDispatch } from '../store/hooks';
-import { addBook } from '../store/slices/booksSlice';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { addBook, updateBook } from '../store/slices/booksSlice';
 
 const statusOptions: { key: BookStatus; label: string; icon: any }[] = [
   { key: 'pending', label: 'Pendiente', icon: 'bookmark-outline' },
@@ -25,10 +25,12 @@ const statusOptions: { key: BookStatus; label: string; icon: any }[] = [
 ];
 
 export default function AddEditBookScreen({ route, navigation }: any) {
-  const existingBook = route.params?.book as Book | undefined;
-  const isEditing = !!existingBook;
-  //1. instanciar funcion Dispatch para poder invocar Actions
+  const bookId = route.params?.bookId;
   const dispatch = useAppDispatch();
+  const existingBook = useAppSelector((state) =>
+    state.books.books.find((b) => b.id === bookId)
+  );
+  const isEditing = !!existingBook;
 
   const [title, setTitle] = useState(existingBook?.title || '');
   const [author, setAuthor] = useState(existingBook?.author || '');
@@ -43,20 +45,26 @@ export default function AddEditBookScreen({ route, navigation }: any) {
       Alert.alert ('Campos Requeridos', 'Titulo y Autor son requeridos para guardar un libro')
       return;
     }
-    //armar objeto a almacenar
     const bookData: Book = {
-      id : existingBook?.id || Date.now().toString(),
-      title, 
-      author, 
-      genre, 
-      status, 
+      id: existingBook?.id || Date.now().toString(),
+      title,
+      author,
+      genre,
+      status,
       rating,
       review,
-      photos: [],
-      createdAt: existingBook?.id || Date.now().toString(),
+      coverImage: existingBook?.coverImage || '',
+      photos: existingBook?.photos || [],
+      startDate: existingBook?.startDate,
+      endDate: existingBook?.endDate,
+      createdAt: existingBook?.createdAt || new Date().toISOString(),
     };
-    //2. invocar action "addBook" enviandole bookData como payload
-    dispatch(addBook(bookData));
+
+    if (isEditing) {
+      dispatch(updateBook(bookData));
+    } else {
+      dispatch(addBook(bookData));
+    }
     navigation.goBack();
   };
   return (

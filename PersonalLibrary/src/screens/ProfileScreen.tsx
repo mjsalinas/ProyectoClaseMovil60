@@ -2,11 +2,11 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
 import { useAuth } from '../contexts/AuthContext';
-import { Book } from '../types/book';
+import { useAppSelector } from '../store/hooks';
 
 export default function ProfileScreen({ navigation }: any) {
   const { user, logout } = useAuth();
-  const books: Book[] = [];
+  const books = useAppSelector((state) => state.books.books);
 
   const stats = {
     read: books.filter((b) => b.status === 'read').length,

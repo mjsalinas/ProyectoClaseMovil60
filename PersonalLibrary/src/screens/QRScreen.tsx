@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '../theme/colors';
-import { Book } from '../types/book';
+import { useAppSelector } from '../store/hooks';
+import RatingStars from '../components/RatingStars';
 
 type QRMode = 'scan' | 'generate';
 type GenerateType = 'book' | 'list';
@@ -11,6 +12,9 @@ export default function QRScreen() {
   const [mode, setMode] = useState<QRMode>('scan');
   const [generateType, setGenerateType] = useState<GenerateType>('book');
   const [selectedBook, setSelectedBook] = useState<string | null>(null);
+  const readBooks = useAppSelector((state) =>
+    state.books.books.filter((b) => b.status === 'read')
+  );
 
   return (
     <View style={styles.container}>
@@ -124,10 +128,37 @@ export default function QRScreen() {
           {generateType === 'book' && (
             <View style={styles.bookSelector}>
               <Text style={styles.selectorLabel}>Selecciona un libro:</Text>
-              <View style={styles.emptyBookList}>
-                <MaterialIcons name="menu-book" size={32} color={colors.textLight} />
-                <Text style={styles.emptyBookText}>No hay libros leídos aún</Text>
-              </View>
+              {readBooks.length > 0 ? (
+                readBooks.map((book) => (
+                  <TouchableOpacity
+                    key={book.id}
+                    style={[styles.bookOption, selectedBook === book.id && styles.bookOptionActive]}
+                    onPress={() => setSelectedBook(book.id)}
+                    activeOpacity={0.7}
+                  >
+                    <MaterialIcons
+                      name={selectedBook === book.id ? 'radio-button-checked' : 'radio-button-unchecked'}
+                      size={22}
+                      color={selectedBook === book.id ? colors.primary : colors.textLight}
+                    />
+                    <View style={styles.bookOptionCover}>
+                      <MaterialIcons name="menu-book" size={16} color={colors.primaryLight} />
+                    </View>
+                    <View style={styles.bookOptionInfo}>
+                      <Text style={styles.bookOptionTitle} numberOfLines={1}>{book.title}</Text>
+                      <View style={styles.bookOptionMeta}>
+                        <Text style={styles.bookOptionAuthor}>{book.author}</Text>
+                        <RatingStars rating={book.rating} size={12} />
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                ))
+              ) : (
+                <View style={styles.emptyBookList}>
+                  <MaterialIcons name="menu-book" size={32} color={colors.textLight} />
+                  <Text style={styles.emptyBookText}>No hay libros leídos aún</Text>
+                </View>
+              )}
             </View>
           )}
 

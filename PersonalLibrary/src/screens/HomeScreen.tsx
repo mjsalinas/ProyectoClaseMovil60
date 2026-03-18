@@ -17,7 +17,8 @@ import BookCard from '../components/BookCard';
 import SearchBar from '../components/SearchBar';
 import FilterChip from '../components/FilterChip';
 import EmptyState from '../components/EmptyState';
-import { useAppSelector } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { selectBook } from '../store/slices/booksSlice';
 
 type FilterOption = 'all' | BookStatus;
 
@@ -31,6 +32,7 @@ const filters: { key: FilterOption; label: string }[] = [
 export default function HomeScreen({ navigation }: any) {
   const [search, setSearch] = useState('');
   const [activeFilter, setActiveFilter] = useState<FilterOption>('all');
+    const dispatch = useAppDispatch();
   
   //obtener informacion del store (estado global de la aplicacion con Redux)
   const books = useAppSelector((state)=> state.books.books);
@@ -131,7 +133,10 @@ export default function HomeScreen({ navigation }: any) {
             renderItem={({ item }) => (
               <BookCard
                 book={item}
-                onPress={() => navigation.navigate('BookDetail', { bookId: item.id })}
+                onPress={() => {
+                  dispatch(selectBook(item));
+                  navigation.navigate('BookDetail', { bookId: item.id })}}
+
               />
             )}
             ListEmptyComponent={

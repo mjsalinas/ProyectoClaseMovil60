@@ -7,13 +7,11 @@ import AddEditBookScreen from '../screens/AddEditBookScreen';
 import PhotoAlbumScreen from '../screens/PhotoAlbumScreen';
 import ExportImportScreen from '../screens/ExportImportScreen';
 
-import { Book } from '../types/book';
-
 export type RootStackParamList = {
     Login: undefined;
     Tabs: { email?: string };
-    BookDetail: { book: Book };
-    AddEditBook: { book?: Book } | undefined;
+    BookDetail: { bookId: string };
+    AddEditBook: { bookId?: string } | undefined;
     PhotoAlbum: { bookTitle: string; photos?: string[] };
     ExportImport: undefined;
 };
@@ -49,7 +47,7 @@ export default function StackNavigator() {
                 name="AddEditBook"
                 component={AddEditBookScreen}
                 options={({ route }) => ({
-                    title: route.params?.book ? 'Editar Libro' : 'Nuevo Libro',
+                    title: route.params?.bookId ? 'Editar Libro' : 'Nuevo Libro',
                 })}
             />
             <Stack.Screen
