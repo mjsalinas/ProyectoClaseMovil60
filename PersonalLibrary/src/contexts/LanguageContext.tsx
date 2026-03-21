@@ -14,12 +14,15 @@ const translations = {
     en: {signIn: 'Sign In', 
         welcome: 'Welcome',
         enterEmail: 'Please fill your email',
-        exit: 'Exit App'
+        exit: 'Exit App',
+        register: 'Register'
     },
     es: {signIn: 'Iniciar Sesion', 
         welcome: 'Bienvenido',
         enterEmail: 'Ingrese su correo',
-        exit: 'Salir'
+        exit: 'Salir',
+        register: 'Registrar'
+
     },
     de: {signIn: 'Anmelden',
         welcome: 'Wilkommen',

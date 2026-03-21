@@ -24,20 +24,12 @@ export default function LoginScreen({ navigation }: any) {
   const { login } = useAuth();
 
   const handleOnLogin = () => {
-    try {
-      const allowed = login(email, password);
-      if (allowed) {
-        navigation.navigate("Tabs", { screen: "Home" });
-      } else {
-        Alert.alert("Credenciales Incorrectas", "Por favor ingrese correo .edu");
-      }
-    } catch (error: any) {
-      Alert.alert(error.message);
-    }
+       login(email, password);
+        // navigation.navigate("Tabs", { screen: "Home" });
   };
 
-  const handleOnLogout = () => {
-    alert("Alerta logout desde app");
+  const handleOnRegister = () => {
+    navigation.navigate("Register");
   };
 
   return (
@@ -85,8 +77,8 @@ export default function LoginScreen({ navigation }: any) {
             <View style={styles.buttonsContainer}>
               <CustomButton title={"Iniciar Sesión"} onClick={handleOnLogin} />
               <CustomButton
-                title={i18n.t("exit")}
-                onClick={handleOnLogout}
+                title={i18n.t("register")}
+                onClick={handleOnRegister}
                 variant={"secondary"}
               />
             </View>

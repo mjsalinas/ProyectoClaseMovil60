@@ -1,14 +1,14 @@
 import { createContext, useContext, useState } from "react";
 import { User } from "../types/user";
+import { supabase } from "../services/supabaseClient";
+import { Alert } from "react-native";
 
 
 type AuthContextType = {
     user:  User;
     isAllowed: boolean;
-    // login: (email: string, password: string)=>Promise<void>;
-    login: (email: string, password: string) => boolean;
-    // register: (email: string, password: string)=>Promise<void>;
-    // register: (email: string, password: string)=>boolean;
+    register: (email: string, password: string)=>Promise<void>;
+    login: (email: string, password: string)=>Promise<void>;
     logout: ()=>void;
 }
 // 1. Definir el contexto
@@ -25,13 +25,22 @@ export const AuthProvider = ({children}: {children: React.ReactNode} ) => {
     const [user, setUser] = useState<User>(null); 
     const [isAllowed, setIsAllowed] = useState<boolean>(false);
 
-    const login = (email: string, password: string) => {
-        const allowed = email.endsWith('.edu');
-        if (allowed){
-            setUser({email})
-            setIsAllowed(allowed)
-        }
-        return allowed;
+    const register = async (email: string, password: string) => {
+       const {data, error} = await supabase.auth.signUp({
+        email,
+        password
+       });
+       console.log("res data: ", data)
+    }
+    const login = async (email: string, password: string) => {
+        const {data, error} = await supabase.auth.signInWithPassword({
+            email, 
+            password
+        });
+        if (error) {
+            Alert.alert("Error al iniciar sesion", error.message);
+        };
+       console.log("res data: ", data)
     };
     const logout = () =>{
         setUser(null);
@@ -39,7 +48,7 @@ export const AuthProvider = ({children}: {children: React.ReactNode} ) => {
     };
 
     return (
-        <AuthContext.Provider value={{user, isAllowed, login, logout}}>
+        <AuthContext.Provider value={{user, isAllowed, register, login, logout}}>
             {children}
         </AuthContext.Provider>
     )

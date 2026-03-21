@@ -6,6 +6,7 @@ import BookDetailScreen from '../screens/BookDetailScreen';
 import AddEditBookScreen from '../screens/AddEditBookScreen';
 import PhotoAlbumScreen from '../screens/PhotoAlbumScreen';
 import ExportImportScreen from '../screens/ExportImportScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 
 export type RootStackParamList = {
     Login: undefined;
@@ -14,6 +15,7 @@ export type RootStackParamList = {
     AddEditBook: { bookId?: string } | undefined;
     PhotoAlbum: { bookTitle: string; photos?: string[] };
     ExportImport: undefined;
+    Register: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -32,6 +34,11 @@ export default function StackNavigator() {
                 name="Login"
                 component={LoginScreen}
                 options={{ title: 'Inicio de Sesión', headerShown: false }}
+            />
+            <Stack.Screen
+                name="Register"
+                component={RegisterScreen}
+                options={{ title: 'Registro', headerShown: false }}
             />
             <Stack.Screen
                 name="Tabs"
